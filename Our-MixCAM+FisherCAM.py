@@ -1,5 +1,5 @@
 
-"""Implementation of  MixCam attack using our proposed FisheCAM heatmap."""
+"""Implementation of MixCam attack using our proposed FisheCAM heatmap instead of grad_cam ."""
 
 
 from __future__ import absolute_import
@@ -167,7 +167,9 @@ def check_or_create_dir(directory):
         os.makedirs(directory)
 
         
-def grad_cam(end_points, predicted_class, nb_classes=1001, eval_image_size=FLAGS.image_height):
+ """ Using FisherCAM instead of Grad-CAM """
+
+def fisher_cam(end_points, predicted_class, nb_classes=1001, eval_image_size=FLAGS.image_height):
     _logits_name = "Logits"
     # Conv layer tensor [?,10,10,2048]
     layer_name = _layer_names[FLAGS.model_name][0]
@@ -183,32 +185,20 @@ def grad_cam(end_points, predicted_class, nb_classes=1001, eval_image_size=FLAGS
     norm_grads = tf.divide(grads, tf.reshape(tf.sqrt(tf.reduce_mean(tf.square(grads), axis=[1, 2, 3])), [FLAGS.batch_size, 1, 1, 1]) + tf.constant(1e-5))
 
     output, grads_val = conv_layer, norm_grads # sess.run([conv_layer, norm_grads], feed_dict={x_input: images})
-    weights = tf.reduce_mean(grads_val, axis=(1, 2)) 			 # [8, 2048]
-    cam = tf.ones(output.shape[0: 3], dtype=tf.float32)	 # [10,10]
-    # print(f'cam.shape={cam.shape}')
-    # result = list()
-    '''
-    weights: [batch * 2048]
-    output:  [batch * 10 * 10, 2048]
-    return [batch * 299 * 299 * 1]
-    '''
-    # print(f'weight={weights.shape}')
-    # print(f'output={output.shape}')
-    cam += tf.einsum("bmnk, bkl->bmn", output, tf.reshape(weights, [weights.shape[0], weights.shape[1], 1]))
+    squared_grads = tf.square(grads_val)
+    weights = tf.reduce_mean(squared_grads, axis=(1, 2))  # [8, 2048]
+
+    # Incorporating log of the output for Fisher Information
+    log_output = tf.math.log(end_points[_logits_name] + tf.constant(1e-5))
+    fisher_weights = tf.multiply(weights, tf.square(log_output))
+
+    cam = tf.ones(output.shape[0: 3], dtype=tf.float32)  # [10,10]
+    cam += tf.einsum("bmnk, bkl->bmn", output, tf.reshape(fisher_weights, [fisher_weights.shape[0], fisher_weights.shape[1], 1]))
     cam = tf.maximum(cam, 0)
-    # print(f'cam.shape={cam.shape}')
-    # cam = tf.reshape(cam / tf.reduce_max(cam, axis=[1, 2]), [FLAGS.batch_size, -1])
     cam = tf.divide(cam, tf.reshape(tf.reduce_max(cam, axis=[1, 2]), [FLAGS.batch_size, 1, 1]))
-    # cam = tf.reshape(cam, [FLAGS.batch_size, -1])
-    # print(f'cam1={cam.shape}')
     cam = tf.image.resize_images(tf.expand_dims(cam, axis=-1), [eval_image_size, eval_image_size], method=0)
-    #
-    # cam = tf.reshape(cam, [FLAGS.batch_size, eval_image_size, eval_image_size])
-    # percentile = tf.contrib.distributions.percentile(cam, FLAGS.percentile, axis=[1, 2])
-    # # print(f'percentile={percentile.shape}')
-    # cam = cam - tf.reshape(percentile, [FLAGS.batch_size, 1, 1])
-    # cam = tf.maximum(tf.sign(cam), 0)
     return cam
+
 
 
 def kl_for_probs(p, q):
