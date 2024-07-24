@@ -12,7 +12,7 @@ Inspired from paper
 - pandas 
 - imageio
 - PyTorch
-- -pillow
+- pillow
 - OpenCV
 - NumPy
 - Matplotlib
