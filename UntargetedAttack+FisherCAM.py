@@ -1,3 +1,5 @@
+# Untargeted attack using FisherCAM
+
 import torch
 import torch.nn.functional as F
 import torchvision.transforms as transforms
@@ -19,22 +21,22 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-image = Image.open("golden.jpeg")
+image = Image.open("/content/Ax (2).jpg")
 image = transform(image).unsqueeze(0)
 
-# Function to compute class activation map (CAM)
-def generate_cam(feature_map, class_weights):
+# Function to compute FisherCAM
+def generate_fisher_cam(feature_map, fisher_weights):
     size_upsample = (224, 224)
     nc, h, w = feature_map.shape
-    cam = class_weights.dot(feature_map.reshape((nc, h * w)))
+    cam = fisher_weights.dot(feature_map.reshape((nc, h * w)))
     cam = cam.reshape(h, w)
     cam = cam - np.min(cam)
     cam_img = cam / np.max(cam)
     cam_img = np.uint8(255 * cam_img)
     return cv2.resize(cam_img, size_upsample)
 
-# Compute gradients and generate CAM
-def grad_cam(model, image, target_class):
+# Compute gradients and generate FisherCAM
+def fisher_cam(model, image, target_class):
     features = []
     gradients = []
 
@@ -60,8 +62,10 @@ def grad_cam(model, image, target_class):
     grads_val = gradients[0].cpu().data.numpy()[0]
     target = features[0].cpu().data.numpy()[0]
 
-    weights = np.mean(grads_val, axis=(1, 2))
-    cam = generate_cam(target, weights)
+    squared_grads = np.square(grads_val)
+    fisher_weights = np.mean(squared_grads, axis=(1, 2))
+
+    cam = generate_fisher_cam(target, fisher_weights)
 
     return cam
 
@@ -77,7 +81,7 @@ def mixcam_attack_untargeted(model, image, epsilon, num_iterations, decay_factor
         output = model(perturbed_image)
         pred_class = output.argmax().item()
 
-        cam = grad_cam(model, perturbed_image, pred_class)
+        cam = fisher_cam(model, perturbed_image, pred_class)
         mask = cam >= np.percentile(cam, q_percentile)
         mask = torch.tensor(mask, dtype=torch.float32).unsqueeze(0).unsqueeze(0).to(image.device)
 
