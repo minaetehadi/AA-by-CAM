@@ -32,6 +32,6 @@ Code refers to
 - [AdMix](https://github.com/JHL-HUST/Admix)
 
 # Contact 
-Please send your suggestion and questions to this email (minaetehadi@eng.ui.ac.ir)
+If you have any questions or need further assistance, please feel free to reach out to me at  (minaetehadi@eng.ui.ac.ir)
 
 
