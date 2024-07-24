@@ -11,7 +11,8 @@ Inspired from paper
 - scipy 
 - pandas 
 - imageio
-- PyTorch 
+- PyTorch
+- -pillow
 - OpenCV
 - NumPy
 - Matplotlib
