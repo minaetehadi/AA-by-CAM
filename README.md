@@ -8,5 +8,5 @@ Inspired from paper
 Code refers to 
 - [MixCam](https://github.com/LongTerm417/MixCam)
 
-- Grad-CAM
-- AdMix
+- [AdMix](https://github.com/JHL-HUST/Admix)
+
