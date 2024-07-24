@@ -18,7 +18,7 @@ from tensorflow.contrib.image import transform as images_transform
 from tensorflow.contrib.image import rotate as images_rotate
 
 from func import *
-from cutmix import cutmix
+from CutMix import cutmix
 
 
 from DNNModels import InceptionV3Model, InceptionV4Model, InceptionResnetModel, ResNetModel
