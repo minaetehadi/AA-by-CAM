@@ -8,11 +8,11 @@ Inspired from paper
 
 - Python 3.x
 - Tensorflow 
-- scipy 
-- pandas 
-- imageio
+- Scipy 
+- Pandas 
+- Imageio
 - PyTorch
-- pillow
+- Pillow
 - OpenCV
 - NumPy
 - Matplotlib
