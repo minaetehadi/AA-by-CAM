@@ -21,7 +21,7 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-image = Image.open("/content/Ax (2).jpg")
+image = Image.open("/path/image.jpg")
 image = transform(image).unsqueeze(0)
 
 # Function to compute FisherCAM
