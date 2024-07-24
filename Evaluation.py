@@ -10,7 +10,8 @@ import numpy as np
 # from scipy.misc import imread, imresize, imsave
 from imageio import imread #, imresize, imsave
 import pandas as pd
-from nets import inception_v3, inception_v4, inception_resnet_v2, resnet_v2
+
+from DNNModels import InceptionV3Model, InceptionV4Model, InceptionResnetModel, ResNetModel
 from func import *
 import warnings
 from tqdm import tqdm
@@ -34,7 +35,7 @@ tf.flags.DEFINE_string('output_dir', './outputs', 'Output directory with images.
 
 tf.flags.DEFINE_integer('percentile', 90, "Name of the percentile")
 
-tf.flags.DEFINE_string('model_name', "inception_v3", "Name of the model")
+tf.flags.DEFINE_string('model_name', "InceptionV3Model", "Name of the model")
 
 tf.flags.DEFINE_string('attack_method', "", "Name of the model")
 
@@ -49,13 +50,13 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 checkpoint_path = './models'
 model_checkpoint_map = {
-    'inception_v3': os.path.join(checkpoint_path, 'inception_v3.ckpt'),
-    'ens3_adv_inception_v3': os.path.join(checkpoint_path, 'ens3_adv_inception_v3_rename.ckpt'),
-    'ens4_adv_inception_v3': os.path.join(checkpoint_path, 'ens4_adv_inception_v3_rename.ckpt'),
-    'inception_v4': os.path.join(checkpoint_path, 'inception_v4.ckpt'),
-    'inception_resnet_v2': os.path.join(checkpoint_path, 'inception_resnet_v2_2016_08_30.ckpt'),
-    'ens_adv_inception_resnet_v2': os.path.join(checkpoint_path, 'ens_adv_inception_resnet_v2_rename.ckpt'),
-    'resnet_v2': os.path.join(checkpoint_path, 'resnet_v2_101.ckpt')}
+    'InceptionV3Model': os.path.join(checkpoint_path, 'InceptionV3Model.ckpt'),
+    'ens3_adv_InceptionV3Model': os.path.join(checkpoint_path, 'ens3_adv_InceptionV3Model_rename.ckpt'),
+    'ens4_adv_InceptionV3Model': os.path.join(checkpoint_path, 'ens4_adv_InceptionV3Model_rename.ckpt'),
+    'InceptionV4Model': os.path.join(checkpoint_path, 'InceptionV4Model.ckpt'),
+    'InceptionResnetModel': os.path.join(checkpoint_path, 'InceptionResnetModel_2016_08_30.ckpt'),
+    'ens_adv_InceptionResnetModel': os.path.join(checkpoint_path, 'ens_adv_InceptionResnetModel_rename.ckpt'),
+    'ResNetModel': os.path.join(checkpoint_path, 'ResNetModel_101.ckpt')}
 
 
 def load_labels(file_name):
@@ -115,32 +116,32 @@ if __name__ == '__main__':
     with tf.Graph().as_default():
         x_input = tf.placeholder(tf.float32, shape=batch_shape)
 
-        with slim.arg_scope(inception_v3.inception_v3_arg_scope()):
-            logits_v3, end_points_v3 = inception_v3.inception_v3(
+        with slim.arg_scope(InceptionV3Model.InceptionV3Model_arg_scope()):
+            logits_v3, end_points_v3 = InceptionV3Model.InceptionV3Model(
                 x_input, num_classes=num_classes, is_training=False)
 
-        with slim.arg_scope(inception_v3.inception_v3_arg_scope()):
-            logits_ens3_adv_v3, end_points_ens3_adv_v3 = inception_v3.inception_v3(
+        with slim.arg_scope(InceptionV3Model.InceptionV3Model_arg_scope()):
+            logits_ens3_adv_v3, end_points_ens3_adv_v3 = InceptionV3Model.InceptionV3Model(
                 x_input, num_classes=num_classes, is_training=False, scope='Ens3AdvInceptionV3')
 
-        with slim.arg_scope(inception_v3.inception_v3_arg_scope()):
-            logits_ens4_adv_v3, end_points_ens4_adv_v3 = inception_v3.inception_v3(
+        with slim.arg_scope(InceptionV3Model.InceptionV3Model_arg_scope()):
+            logits_ens4_adv_v3, end_points_ens4_adv_v3 = InceptionV3Model.InceptionV3Model(
                 x_input, num_classes=num_classes, is_training=False, scope='Ens4AdvInceptionV3')
 
-        with slim.arg_scope(inception_v4.inception_v4_arg_scope()):
-            logits_v4, end_points_v4 = inception_v4.inception_v4(
+        with slim.arg_scope(InceptionV4Model.InceptionV4Model_arg_scope()):
+            logits_v4, end_points_v4 = InceptionV4Model.InceptionV4Model(
                 x_input, num_classes=num_classes, is_training=False)
 
-        with slim.arg_scope(inception_resnet_v2.inception_resnet_v2_arg_scope()):
-            logits_res_v2, end_points_res_v2 = inception_resnet_v2.inception_resnet_v2(
+        with slim.arg_scope(InceptionResnetModel.InceptionResnetModel_arg_scope()):
+            logits_res_v2, end_points_res_v2 = InceptionResnetModel.InceptionResnetModel(
                 x_input, num_classes=num_classes, is_training=False)
 
-        with slim.arg_scope(inception_resnet_v2.inception_resnet_v2_arg_scope()):
-            logits_ens_adv_res_v2, end_points_ens_adv_res_v2 = inception_resnet_v2.inception_resnet_v2(
+        with slim.arg_scope(InceptionResnetModel.InceptionResnetModel_arg_scope()):
+            logits_ens_adv_res_v2, end_points_ens_adv_res_v2 = InceptionResnetModel.InceptionResnetModel(
                 x_input, num_classes=num_classes, is_training=False, scope='EnsAdvInceptionResnetV2')
 
-        with slim.arg_scope(resnet_v2.resnet_arg_scope()):
-            logits_resnet, end_points_resnet = resnet_v2.resnet_v2_101(
+        with slim.arg_scope(ResNetModel.resnet_arg_scope()):
+            logits_resnet, end_points_resnet = ResNetModel.ResNetModel_101(
                 x_input, num_classes=num_classes, is_training=False)
 
         pred_v3 = tf.argmax(end_points_v3['Predictions'], 1)
@@ -157,20 +158,20 @@ if __name__ == '__main__':
         s4 = tf.train.Saver(slim.get_model_variables(scope='InceptionV4'))
         s5 = tf.train.Saver(slim.get_model_variables(scope='InceptionResnetV2'))
         s6 = tf.train.Saver(slim.get_model_variables(scope='EnsAdvInceptionResnetV2'))
-        s7 = tf.train.Saver(slim.get_model_variables(scope='resnet_v2'))
+        s7 = tf.train.Saver(slim.get_model_variables(scope='ResNetModel'))
 
         with tf.Session(config=tf.ConfigProto(allow_soft_placement=True)) as sess:
-            s1.restore(sess, model_checkpoint_map['inception_v3'])
-            s2.restore(sess, model_checkpoint_map['ens3_adv_inception_v3'])
-            s3.restore(sess, model_checkpoint_map['ens4_adv_inception_v3'])
-            s4.restore(sess, model_checkpoint_map['inception_v4'])
-            s5.restore(sess, model_checkpoint_map['inception_resnet_v2'])
-            s6.restore(sess, model_checkpoint_map['ens_adv_inception_resnet_v2'])
-            s7.restore(sess, model_checkpoint_map['resnet_v2'])
+            s1.restore(sess, model_checkpoint_map['InceptionV3Model'])
+            s2.restore(sess, model_checkpoint_map['ens3_adv_InceptionV3Model'])
+            s3.restore(sess, model_checkpoint_map['ens4_adv_InceptionV3Model'])
+            s4.restore(sess, model_checkpoint_map['InceptionV4Model'])
+            s5.restore(sess, model_checkpoint_map['InceptionResnetModel'])
+            s6.restore(sess, model_checkpoint_map['ens_adv_InceptionResnetModel'])
+            s7.restore(sess, model_checkpoint_map['ResNetModel'])
 
-            model_name = ['inception_v3', 'inception_v4', 'inception_resnet_v2',
-                          'resnet_v2', 'ens3_adv_inception_v3', 'ens4_adv_inception_v3',
-                          'ens_adv_inception_resnet_v2']
+            model_name = ['InceptionV3Model', 'InceptionV4Model', 'InceptionResnetModel',
+                          'ResNetModel', 'ens3_adv_InceptionV3Model', 'ens4_adv_InceptionV3Model',
+                          'ens_adv_InceptionResnetModel']
             success_count = np.zeros(len(model_name))
 
             idx = 0
