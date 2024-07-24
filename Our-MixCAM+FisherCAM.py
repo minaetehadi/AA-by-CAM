@@ -1,5 +1,5 @@
 
-"""Implementation of  MixCam attack using our proposed FisheCAM heatmap inspired from Fisher Information."""
+"""Implementation of  MixCam attack using our proposed FisheCAM heatmap."""
 
 
 from __future__ import absolute_import
