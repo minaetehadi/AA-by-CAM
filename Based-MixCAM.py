@@ -1,6 +1,6 @@
-# coding=utf-8
-"""Implementation of MixCam attack."""
-# MixCam before scale
+
+"""Implementation of Original MixCam attack using Grad-CAM heatmap."""
+
 
 from __future__ import absolute_import
 from __future__ import division
@@ -20,7 +20,8 @@ from tensorflow.contrib.image import rotate as images_rotate
 from func import *
 from cutmix import cutmix
 
-from nets import inception_v3, inception_v4, inception_resnet_v2, resnet_v2
+
+from DNNModels import InceptionV3Model, InceptionV4Model, InceptionResnetModel, ResNetModel
 
 import random
 
@@ -56,7 +57,7 @@ tf.flags.DEFINE_string('input_dir', './dev_data/val_rs', 'Input directory with i
 
 tf.flags.DEFINE_string('output_dir', './outputs', 'Output directory with images.')
 
-tf.flags.DEFINE_string('model_name', "inception_v3", "Name of the model")
+tf.flags.DEFINE_string('model_name', "InceptionV3Model", "Name of the model")
 
 tf.flags.DEFINE_string('attack_method', "", "Name of the model")
 
@@ -75,19 +76,19 @@ tf.set_random_seed(0)
 random.seed(0)
 
 model_checkpoint_map = {
-    'inception_v3': os.path.join(FLAGS.checkpoint_path, 'inception_v3.ckpt'),
-    'adv_inception_v3': os.path.join(FLAGS.checkpoint_path, 'adv_inception_v3_rename.ckpt'),
-    'ens3_adv_inception_v3': os.path.join(FLAGS.checkpoint_path, 'ens3_adv_inception_v3_rename.ckpt'),
-    'ens4_adv_inception_v3': os.path.join(FLAGS.checkpoint_path, 'ens4_adv_inception_v3_rename.ckpt'),
-    'inception_v4': os.path.join(FLAGS.checkpoint_path, 'inception_v4.ckpt'),
-    'inception_resnet_v2': os.path.join(FLAGS.checkpoint_path, 'inception_resnet_v2_2016_08_30.ckpt'),
-    'ens_adv_inception_resnet_v2': os.path.join(FLAGS.checkpoint_path, 'ens_adv_inception_resnet_v2_rename.ckpt'),
-    'resnet_v2': os.path.join(FLAGS.checkpoint_path, 'resnet_v2_101.ckpt')}
+    'InceptionV3Model': os.path.join(FLAGS.checkpoint_path, 'InceptionV3Model.ckpt'),
+    'adv_InceptionV3Model': os.path.join(FLAGS.checkpoint_path, 'adv_InceptionV3Model_rename.ckpt'),
+    'ens3_adv_InceptionV3Model': os.path.join(FLAGS.checkpoint_path, 'ens3_adv_InceptionV3Model_rename.ckpt'),
+    'ens4_adv_InceptionV3Model': os.path.join(FLAGS.checkpoint_path, 'ens4_adv_InceptionV3Model_rename.ckpt'),
+    'InceptionV4Model': os.path.join(FLAGS.checkpoint_path, 'InceptionV4Model.ckpt'),
+    'InceptionResnetModel': os.path.join(FLAGS.checkpoint_path, 'InceptionResnetModel_2016_08_30.ckpt'),
+    'ens_adv_InceptionResnetModel': os.path.join(FLAGS.checkpoint_path, 'ens_adv_InceptionResnetModel_rename.ckpt'),
+    'ResNetModel': os.path.join(FLAGS.checkpoint_path, 'ResNetModel_101.ckpt')}
 
-_layer_names = {"resnet_v2": ["PrePool", "Predictions"],
-                "inception_v3": ["PrePool", "Predictions"],
-                "inception_v4": ["PrePool", "Predictions"],
-                "inception_resnet_v2": ["PrePool", "Predictions"],
+_layer_names = {"ResNetModel": ["PrePool", "Predictions"],
+                "InceptionV3Model": ["PrePool", "Predictions"],
+                "InceptionV4Model": ["PrePool", "Predictions"],
+                "InceptionResnetModel": ["PrePool", "Predictions"],
                  }
 
 percentile_list = [i for i in range(1, 100) if (i % FLAGS.sigma) == 0]
@@ -212,10 +213,10 @@ def grad_cam(end_points, predicted_class, nb_classes=1001, eval_image_size=FLAGS
 
 def kl_for_probs(p, q):
     '''
-    计算两个离散分布的KL散度
-    :param p: 分布1
-    :param q:分布2
-    :return: KL散度值
+   
+    :param p:
+    :param q:
+    :return: 
     '''
 
     neg_ent = tf.reduce_sum(p * tf.log(p), axis=-1)
@@ -238,21 +239,21 @@ def psnr(p, q):
 
 def get_model_results(x, model_name=FLAGS.model_name, num_classes=1001):
     logits, end_points = None, None
-    if model_name == 'resnet_v2':
-        with slim.arg_scope(resnet_v2.resnet_arg_scope()):
-            logits, end_points = resnet_v2.resnet_v2_101(
+    if model_name == 'ResNetModel':
+        with slim.arg_scope(ResNetModel.resnet_arg_scope()):
+            logits, end_points = ResNetModel.ResNetModel_101(
                 x, num_classes=num_classes, is_training=False, reuse=tf.AUTO_REUSE)
-    elif model_name == 'inception_v3':
-        with slim.arg_scope(inception_v3.inception_v3_arg_scope()):
-            logits, end_points = inception_v3.inception_v3(
+    elif model_name == 'InceptionV3Model':
+        with slim.arg_scope(InceptionV3Model.InceptionV3Model_arg_scope()):
+            logits, end_points = InceptionV3Model.InceptionV3Model(
                 x, num_classes=num_classes, is_training=False, reuse=tf.AUTO_REUSE)
-    elif model_name == 'inception_v4':
-        with slim.arg_scope(inception_v4.inception_v4_arg_scope()):
-            logits, end_points = inception_v4.inception_v4(
+    elif model_name == 'InceptionV4Model':
+        with slim.arg_scope(InceptionV4Model.InceptionV4Model_arg_scope()):
+            logits, end_points = InceptionV4Model.InceptionV4Model(
                 x, num_classes=num_classes, is_training=False, reuse=tf.AUTO_REUSE)
-    elif model_name == 'inception_resnet_v2':
-        with slim.arg_scope(inception_resnet_v2.inception_resnet_v2_arg_scope()):
-            logits, end_points = inception_resnet_v2.inception_resnet_v2(
+    elif model_name == 'InceptionResnetModel':
+        with slim.arg_scope(InceptionResnetModel.InceptionResnetModel_arg_scope()):
+            logits, end_points = InceptionResnetModel.InceptionResnetModel(
                 x, num_classes=num_classes, is_training=False, reuse=tf.AUTO_REUSE)
 
     return logits, end_points
@@ -389,10 +390,10 @@ from skimage import io
 from matplotlib import pyplot as plt
 import cv2
 
-model_variables_map = {"resnet_v2": ["resnet_v2", "resnet_v2"],
-                       "inception_v3": ["InceptionV3", "inception_v3"],
-                       "inception_v4": ["InceptionV4", "inception_v4"],
-                       "inception_resnet_v2": ["InceptionResnetV2", "inception_resnet_v2"],
+model_variables_map = {"ResNetModel": ["ResNetModel", "ResNetModel"],
+                       "InceptionV3Model": ["InceptionV3", "InceptionV3Model"],
+                       "InceptionV4Model": ["InceptionV4", "InceptionV4Model"],
+                       "InceptionResnetModel": ["InceptionResnetV2", "InceptionResnetModel"],
                       }
 
 def main(_):
@@ -417,8 +418,8 @@ def main(_):
         x_max = tf.clip_by_value(x_input + eps, -1.0, 1.0)
         x_min = tf.clip_by_value(x_input - eps, -1.0, 1.0)
 
-        # with slim.arg_scope(resnet_v2.resnet_arg_scope()):
-        #     logits_v3, end_points_v3 = resnet_v2.resnet_v2_101(
+        # with slim.arg_scope(ResNetModel.resnet_arg_scope()):
+        #     logits_v3, end_points_v3 = ResNetModel.ResNetModel_101(
         #         x_input, num_classes=1001, is_training=False, reuse=tf.AUTO_REUSE)
         logits_v3, end_points_v3 = get_model_results(x=x_input, model_name=FLAGS.model_name, num_classes=1001)
         pred = tf.argmax(end_points_v3['Predictions'], 1)
@@ -435,7 +436,7 @@ def main(_):
         # s1 = tf.train.Saver(slim.get_model_variables(scope='InceptionV3'))
         # s2 = tf.train.Saver(slim.get_model_variables(scope='InceptionV4'))
         # s3 = tf.train.Saver(slim.get_model_variables(scope='InceptionResnetV2'))
-        # s4 = tf.train.Saver(slim.get_model_variables(scope='resnet_v2'))
+        # s4 = tf.train.Saver(slim.get_model_variables(scope='ResNetModel'))
         # s5 = tf.train.Saver(slim.get_model_variables(scope='Ens3AdvInceptionV3'))
         # s6 = tf.train.Saver(slim.get_model_variables(scope='Ens4AdvInceptionV3'))
         # s7 = tf.train.Saver(slim.get_model_variables(scope='EnsAdvInceptionResnetV2'))
@@ -444,14 +445,14 @@ def main(_):
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
             s.restore(sess, model_checkpoint_map[model_variables_map[FLAGS.model_name][1]])
-            # s1.restore(sess, model_checkpoint_map['inception_v3'])
-            # s2.restore(sess, model_checkpoint_map['inception_v4'])
-            # s3.restore(sess, model_checkpoint_map['inception_resnet_v2'])
-            # s4.restore(sess, model_checkpoint_map['resnet_v2'])
-            # s5.restore(sess, model_checkpoint_map['ens3_adv_inception_v3'])
-            # s6.restore(sess, model_checkpoint_map['ens4_adv_inception_v3'])
-            # s7.restore(sess, model_checkpoint_map['ens_adv_inception_resnet_v2'])
-            # s8.restore(sess, model_checkpoint_map['adv_inception_v3'])
+            # s1.restore(sess, model_checkpoint_map['InceptionV3Model'])
+            # s2.restore(sess, model_checkpoint_map['InceptionV4Model'])
+            # s3.restore(sess, model_checkpoint_map['InceptionResnetModel'])
+            # s4.restore(sess, model_checkpoint_map['ResNetModel'])
+            # s5.restore(sess, model_checkpoint_map['ens3_adv_InceptionV3Model'])
+            # s6.restore(sess, model_checkpoint_map['ens4_adv_InceptionV3Model'])
+            # s7.restore(sess, model_checkpoint_map['ens_adv_InceptionResnetModel'])
+            # s8.restore(sess, model_checkpoint_map['adv_InceptionV3Model'])
             idx = 0
             l2_diff = 0
             for filenames, images in load_images(FLAGS.input_dir, batch_shape):
