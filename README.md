@@ -15,7 +15,15 @@ Inspired from paper
 - OpenCV
 - NumPy
 - Matplotlib
-- Pillow
+
+
+  ## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/minaetehadi/FisherCAM-on-MixCAM.git
+   cd FisherCAM-on-MixCAM
+   
 # Acknowledge
 Code refers to 
 - [MixCam](https://github.com/LongTerm417/MixCam)
