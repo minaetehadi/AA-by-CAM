@@ -12,11 +12,11 @@ Adversarial Attack using FisherCAM Heatmap
 - pandas >= 1.0.1
 - imageio >= 2.6.1
 - Pandas 
-- Imageio
 - PyTorch
 - Pillow
 - NumPy
 - Matplotlib
+- Requests
 
 
   ## Fisher-CAM Heatmap generation
@@ -32,14 +32,17 @@ Adversarial Attack using FisherCAM Heatmap
 ```
 
    ## Adversarial example generation
-
- Add your image sampe: 
-```
-image_path = "/content/dog1.jpg"
-```
-   ```bash
+      ```bash
     python Adversarial-Example-Sample.py
 ```
+ Add your input image:
+```
+ image_path = "/path/to/your/image.jpg"
+image = Image.open(image_path)
+image_tensor = transform(image).unsqueeze(0)
+```
+```
+
 
   ## Runing adversarial attck on ILSVRC 2012 dataset 
 1. [Validation data](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/blob/main/validation.csv)
