@@ -48,11 +48,7 @@ image_tensor = transform(image).unsqueeze(0)
 2. [Pre-trained models](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/tree/main/DNNModels)
 3. 
    ```bash
-   python Our-Attack-by-FisherCAM.py
-
-
-
-   
+   python Our-Attack-by-FisherCAM.py   
 # Acknowledge
 Code refers to 
 - [MixCam](https://github.com/LongTerm417/MixCam)
