@@ -27,7 +27,18 @@ Adversarial Attack using FisherCAM Heatmap
    cd FisherCAMHeatmap
     python FisherCAMHeatmap.py
 ```
-   
+
+   ## Adversarial example generation
+
+ Add your image sampe: 
+```
+image_path = "/content/dog1.jpg"
+```
+   ```bash
+ 
+    python Adversarial-Example-Sample.py
+```
+
   ## Runing adversarial attck on ILSVRC 2012 dataset 
 1. [Validation data](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/blob/main/validation.csv)
 2. [Pre-trained models](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/tree/main/DNNModels)
