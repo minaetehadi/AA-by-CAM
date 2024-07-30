@@ -19,6 +19,15 @@ Adversarial Attack using FisherCAM Heatmap
 - Matplotlib
 
 
+  ## Fisher-CAM Heatmap generation
+
+ Clone the repository:
+   ```bash
+   git clone https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping.git
+   cd FisherCAMHeatmap
+ !python MixCam/mi_mixcam.py
+```
+   
   ## Runing adversarial attck on ILSVRC 2012 dataset 
 1. [Validation data](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/blob/main/validation.csv)
 2. [Pre-trained models](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/tree/main/DNNModels)
@@ -26,6 +35,7 @@ Adversarial Attack using FisherCAM Heatmap
    ```bash
    git clone https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping.git
    cd Our-Attack-by-FisherCAM
+```
    
 # Acknowledge
 Code refers to 
