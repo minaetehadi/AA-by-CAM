@@ -25,7 +25,7 @@ Adversarial Attack using FisherCAM Heatmap
    ```bash
    git clone https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping.git
    cd FisherCAMHeatmap
- !python MixCam/mi_mixcam.py
+    python FisherCAMHeatmap.py
 ```
    
   ## Runing adversarial attck on ILSVRC 2012 dataset 
@@ -35,7 +35,7 @@ Adversarial Attack using FisherCAM Heatmap
    ```bash
    git clone https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping.git
    cd Our-Attack-by-FisherCAM
-```
+
    
 # Acknowledge
 Code refers to 
