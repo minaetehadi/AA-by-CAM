@@ -20,8 +20,8 @@ Adversarial Attack using FisherCAM Heatmap
 
 
   ## Runing adversarial attck on ILSVRC 2012 dataset 
-1. [Validation data] (https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/blob/main/validation.csv)
-2. [Pre-trained models] (https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/tree/main/DNNModels)
+1. [Validation data](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/blob/main/validation.csv)
+2. [Pre-trained models](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/tree/main/DNNModels)
 3. Clone the repository:
    ```bash
    git clone https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping.git
