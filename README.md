@@ -4,22 +4,24 @@ Adversarial Attack using FisherCAM Heatmap
 
 
 # Requirements
-
-- Python 3.x
-- Tensorflow 
-- Scipy 
+- Python >= 3.x
+- Tensorflow => 1.12.0 
+- Numpy >= 1.15.4
+- Opencv >= 3.4.2
+- Scipy > 1.1.0
+- pandas >= 1.0.1
+- imageio >= 2.6.1
 - Pandas 
 - Imageio
 - PyTorch
 - Pillow
-- OpenCV
 - NumPy
 - Matplotlib
 
 
-  ## Installation
-
-1. Clone the repository:
+  ## Runing adversarial attck on ILSVRC 2012 dataset 
+1. validation data can be find here:  [https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/blob/main/validation.csv]
+3. Clone the repository:
    ```bash
    git clone https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping.git
    cd Our-Attack-by-FisherCAM
