@@ -19,8 +19,7 @@ Adversarial Attack using FisherCAM Heatmap
 - Requests
 
 
-  ## Fisher-CAM Heatmap generation
-
+## Fisher-CAM Heatmap generation
  Clone the repository:
    ```bash
    git clone https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping.git
@@ -55,7 +54,7 @@ Code refers to
 
 - [AdMix](https://github.com/JHL-HUST/Admix)
 
-# Contact 
+## Contact 
 If you have any questions or need further assistance, please feel free to reach out to me at  (minaetehadi@eng.ui.ac.ir)
 
 
