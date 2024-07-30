@@ -31,7 +31,7 @@ Adversarial Attack using FisherCAM Heatmap
     python FisherCAMHeatmap.py
 ```
 
-   ## Adversarial example generation
+ ## Adversarial example generation
 ```bash
     python Adversarial-Example-Sample.py
 ```
@@ -43,13 +43,13 @@ image_tensor = transform(image).unsqueeze(0)
 ```
 
 
-  ## Runing adversarial attck on ILSVRC 2012 dataset 
+ ## Runing adversarial attck on ILSVRC 2012 dataset 
 1. [Validation data](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/blob/main/validation.csv)
 2. [Pre-trained models](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/tree/main/DNNModels)
 3. 
    ```bash
    python Our-Attack-by-FisherCAM.py   
-# Acknowledge
+## Acknowledge
 Code refers to 
 - [MixCam](https://github.com/LongTerm417/MixCam)
 
