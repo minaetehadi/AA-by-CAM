@@ -32,15 +32,14 @@ Adversarial Attack using FisherCAM Heatmap
 ```
 
    ## Adversarial example generation
-```
+```bash
     python Adversarial-Example-Sample.py
 ```
  Add your input image:
-```
+```bash
  image_path = "/path/to/your/image.jpg"
 image = Image.open(image_path)
 image_tensor = transform(image).unsqueeze(0)
-```
 ```
 
 
