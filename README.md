@@ -46,10 +46,12 @@ image_tensor = transform(image).unsqueeze(0)
   ## Runing adversarial attck on ILSVRC 2012 dataset 
 1. [Validation data](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/blob/main/validation.csv)
 2. [Pre-trained models](https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping/tree/main/DNNModels)
-3. Clone the repository:
+3. 
    ```bash
-   git clone https://github.com/minaetehadi/Adversarial-Attacks-by-Class-Activation-Mapping.git
+   
    cd Our-Attack-by-FisherCAM
+python Our-Attack-by-FisherCAM.py
+
 
    
 # Acknowledge
