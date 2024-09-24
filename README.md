@@ -14,9 +14,8 @@ Adversarial Attack using Fisher-CAM Heatmap
 - Pandas 
 - PyTorch
 - Pillow
-- NumPy
 - Matplotlib
-- Requests
+
 
 
 ## Fisher-CAM Heatmap generation
