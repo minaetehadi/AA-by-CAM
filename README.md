@@ -11,7 +11,6 @@ Adversarial Attack using Fisher-CAM Heatmap
 - Scipy > 1.1.0
 - pandas >= 1.0.1
 - imageio >= 2.6.1
-- Pandas 
 - PyTorch
 - Pillow
 - Matplotlib
