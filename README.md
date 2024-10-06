@@ -52,6 +52,9 @@ Code refers to
 
 - [AdMix](https://github.com/JHL-HUST/Admix)
 
+## CAM
+![image](https://github.com/user-attachments/assets/da0a531a-7455-4e39-a83d-5925f715fc73)
+
 ## Contact 
 If you have any questions or need further assistance, please feel free to reach out to me at  (minaetehadi@eng.ui.ac.ir)
 
